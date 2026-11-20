@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foodie's - Online Food Ordering</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #fff8f0;
+    color: #333;
+}
+
+header {
+    background: #e65100;
+    color: white;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav a, nav button {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hero {
+    text-align: center;
+    padding: 65px 20px;
+    background: linear-gradient(120deg, #ff8a50, #e65100);
+    color: white;
+}
+
+.hero h2 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+}
+
+.section-title {
+    text-align: center;
+    padding: 35px 10px 15px;
+}
+
+.categories {
+    text-align: center;
+    padding: 15px;
+}
+
+.categories button {
+    padding: 10px 18px;
+    margin: 5px;
+    border: none;
+    border-radius: 20px;
+    background: #ffe0cc;
+    cursor: pointer;
+}
+
+.categories button:hover {
+    background: #e65100;
+    color: white;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    padding: 25px 6%;
+}
+
+.food-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px #ddd;
+    text-align: center;
+    padding-bottom: 18px;
+}
+
+.food-card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
+.food-card h3 {
+    margin: 13px;
+}
+
+.food-card p {
+    color: #e65100;
+    font-weight: bold;
+    margin: 10px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.order-btn, .main-btn {
+    background: #e65100;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 6px;
+    margin: 5px;
+}
+
+.order-btn:hover, .main-btn:hover {
+    background: #bf360c;
+}
+
+#cart, #admin {
+    background: white;
+    margin: 30px auto;
+    padding: 25px;
+    max-width: 850px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #ddd;
+}
+
+#cart h2, #admin h2 {
+    color: #e65100;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 0;
+    flex-wrap: wrap;
+}
+
+.small-btn {
+    padding: 6px 11px;
+    border: none;
+    background: #ffe0cc;
+    border-radius: 4px;
+}
+
+.remove-btn {
+    background: #d32f2f;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.admin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #ddd;
+    padding: 13px 0;
+    flex-wrap: wrap;
+}
+
+.admin-row img {
+    width: 65px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.admin-form {
+    background: #fff8f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(max-width:600px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍔 Foodie's Restaurant</h1>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#cart">Cart 🛒</a>
+        <button onclick="adminLogin()">Admin Login</button>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <h2>Delicious Food Delivered!</h2>
+    <p>Order your favourite food online at the best prices.</p>
+    <br>
+    <a href="#menu">
+        <button class="main-btn">Explore Menu</button>
+    </a>
+</section>
+
+<h2 class="section-title" id="menu">Our Food Menu 🍕</h2>
+
+<div class="categories">
+    <button onclick="showCategory('All')">All</button>
+    <button onclick="showCategory('Pizza')">Pizza</button>
+    <button onclick="showCategory('Burger')">Burger</button>
+    <button onclick="showCategory('Indian')">Indian</button>
+    <button onclick="showCategory('Dessert')">Desserts</button>
+    <button onclick="showCategory('Drinks')">Drinks</button>
+</div>
+
+<div class="menu" id="foodMenu"></div>
+
+<section id="cart">
+    <h2>🛒 Your Shopping Cart</h2>
+    <div id="cartItems">Your cart is empty.</div>
+    <h3 id="total">Total: ₹0</h3>
+    <br>
+    <button class="main-btn" onclick="placeOrder()">Place Order</button>
+</section>
+
+<section id="admin" class="hidden">
+
+    <h2>⚙️ Admin Dashboard</h2>
+
+    <h3>Add / Update Food Item</h3>
+
+    <div class="admin-form">
+
+        <input type="hidden" id="editId">
+
+        <label>Food Name</label>
+        <input type="text" id="foodName" placeholder="Enter food name">
+
+        <label>Food Price (₹)</label>
+        <input type="number" id="foodPrice" placeholder="Enter price" min="1">
+
+        <label>Food Image URL</label>
+        <input type="url" id="foodImage" placeholder="Enter image URL">
+
+        <label>Category</label>
+        <input type="text" id="foodCategory"
+        placeholder="Pizza / Burger / Indian / Dessert / Drinks">
+
+        <button class="main-btn" onclick="saveFood()">Save Food Item</button>
+        <button class="small-btn" onclick="clearForm()">Clear Form</button>
+
+    </div>
+
+    <h3>Manage Food Items</h3>
+    <div id="adminFoodList"></div>
+
+    <br>
+    <button class="main-btn" onclick="adminLogout()">Logout</button>
+
+</section>
+
+<footer>
+    <h3>Foodie's Restaurant</h3>
+    <p>Fresh Food | Best Quality | Fast Delivery</p>
+    <p>Contact: foodies@example.com</p>
+    <p>© 2026 Foodie's Restaurant</p>
+</footer>
+
+<script>
+
+// FOOD DATABASE
+
+const defaultFoods = [
+    {id:1,name:"Chicken Burger",price:150,category:"Burger",image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500"},
+    {id:2,name:"Cheese Pizza",price:250,category:"Pizza",image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500"},
+    {id:3,name:"Veg Pizza",price:200,category:"Pizza",image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500"},
+    {id:4,name:"Chicken Biryani",price:220,category:"Indian",image:"https://images.unsplash.com/photo-1563379091339-03246963d96c?w=500"},
+    {id:5,name:"Veg Biryani",price:160,category:"Indian",image:"https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500"},
+    {id:6,name:"French Fries",price:90,category:"Indian",image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500"},
+    {id:7,name:"Sandwich",price:100,category:"Indian",image:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500"},
+    {id:8,name:"Chocolate Cake",price:120,category:"Dessert",image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500"},
+    {id:9,name:"Ice Cream",price:80,category:"Dessert",image:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500"},
+    {id:10,name:"Donuts",price:70,category:"Dessert",image:"https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500"},
+    {id:11,name:"Pasta",price:180,category:"Indian",image:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500"},
+    {id:12,name:"Noodles",price:130,category:"Indian",image:"https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500"},
+    {id:13,name:"Chicken Wings",price:190,category:"Indian",image:"https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500"},
+    {id:14,name:"Veg Burger",price:110,category:"Burger",image:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=500"},
+    {id:15,name:"Cold Coffee",price:90,category:"Drinks",image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500"},
+    {id:16,name:"Fresh Juice",price:70,category:"Drinks",image:"https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500"},
+    {id:17,name:"Paneer Curry",price:180,category:"Indian",image:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500"},
+    {id:18,name:"Tacos",price:140,category:"Indian",image:"https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=500"},
+    {id:19,name:"Pancakes",price:120,category:"Dessert",image:"https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=500"},
+    {id:20,name:"Chocolate Milkshake",price:110,category:"Drinks",image:"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500"}
+];
+
+let foods;
+
+try {
+    const savedFoods = localStorage.getItem("foodItems");
+    foods = savedFoods ? JSON.parse(savedFoods) : defaultFoods;
+    if (!Array.isArray(foods)) foods = defaultFoods;
+} catch(error) {
+    foods = defaultFoods;
+}
+
+let cart = {};
+let currentCategory = "All";
+let isAdmin = false;
+
+function saveDatabase() {
+    localStorage.setItem("foodItems", JSON.stringify(foods));
+}
+
+function showCategory(category) {
+    currentCategory = category;
+    renderFoods();
+}
+
+function renderFoods() {
+
+    const menu = document.getElementById("foodMenu");
+    menu.innerHTML = "";
+
+    const filtered = currentCategory === "All"
+        ? foods
+        : foods.filter(f => f.category.toLowerCase() === currentCategory.toLowerCase());
+
+    filtered.forEach(food => {
+
+        menu.innerHTML += `
+        <div class="food-card">
+
+            <img src="${escapeHTML(food.image)}"
+            alt="${escapeHTML(food.name)}"
+            onerror="this.src='https://placehold.co/500x300?text=Food+Image'">
+
+            <h3>${escapeHTML(food.name)}</h3>
+
+            <p>₹${Number(food.price)}</p>
+
+            <button class="order-btn"
+            onclick="addToCart(${food.id})">
+            Add to Cart
+            </button>
+
+        </div>`;
+    });
+
+    if(filtered.length === 0) {
+        menu.innerHTML = "<p>No food items available.</p>";
+    }
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    }[char]));
+}
+
+// CART MANAGEMENT
+
+function addToCart(id) {
+
+    const food = foods.find(f => f.id === id);
+    if (!food) return;
+
+    if(!cart[id]) {
+        cart[id] = 0;
+    }
+
+    cart[id]++;
+    renderCart();
+}
+
+function changeQuantity(id, amount) {
+
+    cart[id] = (cart[id] || 0) + amount;
+
+    if(cart[id] <= 0) {
+        delete cart[id];
+    }
+
+    renderCart();
+}
+
+function renderCart() {
+
+    const cartItems = document.getElementById("cartItems");
+    let total = 0;
+    cartItems.innerHTML = "";
+
+    const ids = Object.keys(cart);
+
+    if(ids.length === 0) {
+        cartItems.innerHTML = "Your cart is empty.";
+    }
+
+    ids.forEach(id => {
+
+        const food = foods.find(f => f.id === Number(id));
+        if (!food) {
+            delete cart[id];
+            return;
+        }
+
+        let subtotal = food.price * cart[id];
+        total += subtotal;
+
+        cartItems.innerHTML += `
+        <div class="cart-item">
+
+            <span>${escapeHTML(food.name)} - ₹${food.price}</span>
+
+            <div>
+                <button class="small-btn"
+                onclick="changeQuantity(${food.id},-1)">-</button>
+
+                ${cart[id]}
+
+                <button class="small-btn"
+                onclick="changeQuantity(${food.id},1)">+</button>
+            </div>
+
+            <strong>₹${subtotal}</strong>
+
+        </div>`;
+    });
+
+    document.getElementById("total").innerText =
+        "Total: ₹" + total;
+}
+
+function placeOrder() {
+
+    if(Object.keys(cart).length === 0) {
+        alert("Please add food items to your cart!");
+        return;
+    }
+
+    const total = Object.keys(cart).reduce((sum,id) => {
+        const food = foods.find(f => f.id === Number(id));
+        return sum + (food ? food.price * cart[id] : 0);
+    }, 0);
+
+    alert("Order placed successfully! Total Amount: ₹" + total +
+    "\nThis is a demonstration. No real payment was processed.");
+
+    cart = {};
+    renderCart();
+}
+
+// ADMIN LOGIN
+
+function adminLogin() {
+
+    const password = prompt("Enter Admin Password:");
+
+    if(password === "admin123") {
+
+        isAdmin = true;
+
+        document.getElementById("admin").classList.remove("hidden");
+
+        renderAdmin();
+
+        document.getElementById("admin").scrollIntoView({
+            behavior:"smooth"
+        });
+
+        alert("Welcome Admin!");
+
+    } else {
+        alert("Incorrect Admin Password!");
+    }
+}
+
+function adminLogout() {
+
+    isAdmin = false;
+
+    document.getElementById("admin").classList.add("hidden");
+
+    clearForm();
+
+    alert("Admin logged out!");
+}
+
+// ADD AND UPDATE FOOD
+
+function saveFood() {
+
+    if(!isAdmin) return;
+
+    const id = document.getElementById("editId").value;
+    const name = document.getElementById("foodName").value.trim();
+    const price = Number(document.getElementById("foodPrice").value);
+    const image = document.getElementById("foodImage").value.trim();
+    const category = document.getElementById("foodCategory").value.trim();
+
+    if(!name || !price || price <= 0 || !image || !category) {
+        alert("Please enter all valid food details!");
+        return;
+    }
+
+    if(!/^https?:\/\//i.test(image)) {
+        alert("Please enter a valid image URL starting with http:// or https://");
+        return;
+    }
+
+    if(id) {
+
+        const index = foods.findIndex(f => f.id === Number(id));
+
+        if(index !== -1) {
+            foods[index] = {
+                id:Number(id),
+                name,
+                price,
+                image,
+                category
+            };
+        }
+
+        alert("Food item updated successfully!");
+
+    } else {
+
+        foods.push({
+            id:Date.now(),
+            name,
+            price,
+            image,
+            category
+        });
+
+        alert("New food item added successfully!");
+    }
+
+    saveDatabase();
+    clearForm();
+    renderFoods();
+    renderAdmin();
+    renderCart();
+}
+
+function editFood(id) {
+
+    if(!isAdmin) return;
+
+    const food = foods.find(f => f.id === id);
+    if(!food) return;
+
+    document.getElementById("editId").value = food.id;
+    document.getElementById("foodName").value = food.name;
+    document.getElementById("foodPrice").value = food.price;
+    document.getElementById("foodImage").value = food.image;
+    document.getElementById("foodCategory").value = food.category;
+
+    document.getElementById("admin").scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+function deleteFood(id) {
+
+    if(!isAdmin) return;
+
+    if(confirm("Are you sure you want to delete this food item?")) {
+
+        foods = foods.filter(f => f.id !== id);
+        delete cart[id];
+
+        saveDatabase();
+        renderFoods();
+        renderAdmin();
+        renderCart();
+
+        alert("Food item deleted successfully!");
+    }
+}
+
+function clearForm() {
+
+    document.getElementById("editId").value = "";
+    document.getElementById("foodName").value = "";
+    document.getElementById("foodPrice").value = "";
+    document.getElementById("foodImage").value = "";
+    document.getElementById("foodCategory").value = "";
+}
+
+// ADMIN FOOD LIST
+
+function renderAdmin() {
+
+    if(!isAdmin) return;
+
+    const list = document.getElementById("adminFoodList");
+
+    list.innerHTML = "";
+
+    foods.forEach(food => {
+
+        list.innerHTML += `
+        <div class="admin-row">
+
+            <img src="${escapeHTML(food.image)}" alt="${escapeHTML(food.name)}">
+
+            <div>
+                <strong>${escapeHTML(food.name)}</strong>
+                <p>₹${food.price} | ${escapeHTML(food.category)}</p>
+            </div>
+
+            <div>
+                <button class="small-btn"
+                onclick="editFood(${food.id})">Edit</button>
+
+                <button class="small-btn remove-btn"
+                onclick="deleteFood(${food.id})">Delete</button>
+            </div>
+
+        </div>`;
+    });
+}
+
+// INITIAL DISPLAY
+
+renderFoods();
+renderCart();
+
+</script>
+
+</body>
+</html>
